@@ -35,8 +35,7 @@ app.get("/",function(req,res)
   //remote: 
   // res.sendFile(path.join(__dirname, '../assignment-3-3-frontend/dist/index.html'));
   //local:
-  res.sendFile(__dirname+"/index.html");
-
+  res.sendFile(__dirname + "/index.html");
 });
 
 // app.use(cors());

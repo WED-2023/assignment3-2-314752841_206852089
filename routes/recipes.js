@@ -2,7 +2,9 @@ var express = require("express");
 var router = express.Router();
 const recipes_utils = require("./utils/recipes_utils");
 
-router.get("/", (req, res) => res.send("im here"));
+router.get("/", (req, res) => {
+   res.sendFile(__dirname + "/recipes.html")
+});
 
 
 /**
@@ -16,7 +18,5 @@ router.get("/:recipeId", async (req, res, next) => {
     next(error);
   }
 });
-
-
 
 module.exports = router;
