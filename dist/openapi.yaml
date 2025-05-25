@@ -137,6 +137,28 @@ paths:
                 $ref: "#/components/schemas/RecipePreview"
         "404":
           description: recipeId is not exists
+  /recipes/search::
+    get:
+      parameters:
+        - name: query
+          in: path
+          description: search query for recipes
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: data about the recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecipePreview"
+        "404":
+          description: No results
 components:
   schemas:
     User:
@@ -181,12 +203,12 @@ components:
           type: string
           description: user's email
           example: my_name12@gmail.com
-        # image-url:
-        #   pattern: URL
-        #   type: string
-        #   description: URL for the user's image
-        #   example: https://cloudinary.com/
-      description: Model containing user info
+      #   profile_pic:
+      #     pattern: URL
+      #     type: string
+      #     description: URL for the user's image
+      #     example: https://cloudinary.com/
+      # description: Model containing user info
     LoginScheme:
       type: object
       properties:

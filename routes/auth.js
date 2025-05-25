@@ -2,49 +2,11 @@ var express = require("express");
 var router = express.Router();
 const MySql = require("../routes/utils/MySql");
 const DButils = require("../routes/utils/DButils");
+const auth_utils = require("../routes/utils/auth_utils");
 const bcrypt = require("bcrypt");
 const { check } = require("express-validator");
 
-// list of viable countries
-const countries = require("./utils/countries.json").map((country) => {
-  return {
-    name: country.name.common,
-  };
-});
 
-async function checkUsername(username) {
-  regex = /[^A-Za-z]/; // username can only contain letters
-
-  if (username.length < 3 || username.length > 8) {
-    throw { status: 400, message: "Username must be between 3 and 8 characters" };
-  }
-  if (regex.test(username)) {
-    throw { status: 400, message: "Username can only contain letters" };
-  }
-}
-
-async function checkPassword(password) {
-  regex = /^(?=.*\d)(?=.*[^A-Za-z0-9]).+$/ // password must contain at least one digit and one special character
-
-  if (password.length < 5 || password.length > 10) {
-    throw { status: 400, message: "Password must be between 5 and 10 characters" };
-  }
-  if (!regex.test(password)) {
-    throw { status: 400, message: "Password must contain at least one digit and one special character" };
-  }
-}
-
-async function checkPasswordsMatch(password, password_confirm) {
-  if (password !== password_confirm) {
-    throw { status: 400, message: "Passwords do not match" };
-  }
-}
-
-async function checkCountry(country) {
-  if (!countries.find((x) => x.name === country)) {
-    throw { status: 400, message: "Country is not valid" };
-  }
-}
 
 router.post("/register", async (req, res, next) => {
   try {
@@ -65,12 +27,12 @@ router.post("/register", async (req, res, next) => {
     users = await DButils.execQuery("SELECT username from users");
 
     // check that username is valid
-    await checkUsername(user_details.username);
+    await auth_utils.checkUsername(user_details.username);
 
-    await checkPassword(user_details.password); // check that password is valid
-    await checkPasswordsMatch(user_details.password, user_details.password_confirm); // check that passwords match
+    await auth_utils.checkPassword(user_details.password); // check that password is valid
+    await auth_utils.checkPasswordsMatch(user_details.password, user_details.password_confirm); // check that passwords match
 
-    await checkCountry(user_details.country); // check that country is valid
+    await auth_utils.checkCountry(user_details.country); // check that country is valid
 
     // Check that username is not taken
     if (users.find((x) => x.username === user_details.username))
@@ -83,7 +45,7 @@ router.post("/register", async (req, res, next) => {
     );
 
     await DButils.execQuery(
-      `INSERT INTO users (username, firstname, lastname, country, password, email, profilePic) VALUES ('${user_details.username}', '${user_details.firstname}', '${user_details.lastname}',
+      `INSERT INTO users (username, firstname, lastname, country, password, email, profile_pic) VALUES ('${user_details.username}', '${user_details.firstname}', '${user_details.lastname}',
       '${user_details.country}', '${hash_password}', '${user_details.email}', '${user_details.profilePic}')`
     );
 
