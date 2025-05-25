@@ -37,7 +37,7 @@ async function getRecipeDetails(recipe_id, showInstructions=false) {
             vegetarian: vegetarian,
             glutenFree: glutenFree,
             instructions: instructions_data
-        } + {}
+        }
     }
     return {
         id: id,
@@ -71,8 +71,19 @@ async function searchByQuery(query, number) {
     return recipes_info;
 }
 
+async function getRecipesPreview(recipes_id_array) {
+    let recipes_info = await Promise.all(
+      recipes_id_array.map(async (id) => {
+        return await getRecipeDetails(id);
+      })
+    );
+
+    return recipes_info;
+}
+
 exports.getRecipeDetails = getRecipeDetails;
 exports.searchByQuery = searchByQuery;
+exports.getRecipesPreview = getRecipesPreview;
 
 
 

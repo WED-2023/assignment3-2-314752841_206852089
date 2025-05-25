@@ -103,7 +103,7 @@ paths:
               type: object
               properties:
                 reciepeId:
-                  type: string
+                  type: int
                   description: reciepe's id which the user saved
                   example: 716429
       responses:
@@ -111,6 +111,8 @@ paths:
           description: The Recipe successfully saved as favorite
         "401":
           description: user is not authorized
+        "409":
+          description: Recipe already exists in the user's favorites
       security:
         - cookieAuth: []
   /recipes/{recipeId}:
