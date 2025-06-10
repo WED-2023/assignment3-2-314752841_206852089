@@ -3,60 +3,114 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Swagger UI</title>
-    <link rel="stylesheet" type="text/css" href="./swagger-ui.css" />
-    <link
-      rel="icon"
-      type="image/png"
-      href="./favicon-32x32.png"
-      sizes="32x32"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="./favicon-16x16.png"
-      sizes="16x16"
-    />
-    <style>
-      html {
-        box-sizing: border-box;
-        overflow: -moz-scrollbars-vertical;
-        overflow-y: scroll;
-      }
-      *,
-      *:before,
-      *:after {
-        box-sizing: inherit;
-      }
-
-      body {
-        margin: 0;
-        background: #fafafa;
-      }
-    </style>
+    <title>Michrot Recipes</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
-
   <body>
-    <div id="swagger-ui"></div>
+    <div id="container">
 
-    <script src="./swagger-ui-bundle.js" charset="UTF-8"></script>
-    <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"></script>
-    <script>
-      window.onload = function () {
-        // Begin Swagger UI call region
-        const ui = SwaggerUIBundle({
-          url: "openapi.yaml",
-          dom_id: "#swagger-ui",
-          deepLinking: true,
-          presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
-          plugins: [SwaggerUIBundle.plugins.DownloadUrl],
-          layout: "StandaloneLayout",
-        });
-        // End Swagger UI call region
-        window.ui = ui;
-      };
-    </script>
+      <nav id="navbar">
+        <div id="logo">
+          <button type="button" onclick="showScreen('home-screen')" style="cursor:pointer; opacity: 0; height: 50px; width: 50px; border-radius: 40%;">Logo Button</button>
+        </div>
+        <div id="welcome-message">Hello, welcome to Michrot Recipes</div>
 
-    Hello world!
+        <ul id="menu">
+
+          <li><a href="#" onclick="showScreen('home-screen')">Main</a></li>
+          
+          <li>
+            <div class="dropdown">
+              <button class="dropbtn">Personal</button>
+              <div class="dropdown-content">
+                <a href="#" onclick="showScreen('favorites-screen')">Favorite &hearts;</a>
+                <a href="#" onclick="showScreen('privates-screen')">Private</a>
+                <a href="#" onclick="showScreen('families-screen')">La Familia</a>
+              </div>
+            </div>
+          </li>
+                    
+          <li>
+            <div class="dropdown">
+              <button class="dropbtn">Account</button>        
+              <div class="dropdown-content">
+                <a href="#" onclick="showScreen('login-screen')">Log in</a>
+                <a href="#" onclick="showScreen('register-screen')">Register</a>
+                <a href="#" onclick="logout()">Log out</a>
+              </div>
+            </div>
+          </li>
+          
+          <li><a href="#" onclick="showScreen('search-screen')">Search Recipes</a></li>
+          
+          <li><a href="#" onclick="showScreen('about-screen')">About</a></li>
+        </ul>
+      </nav>
+
+      <!-- Screens  -->
+      <div id="home-screen" class="screen">
+      </div>
+      
+      <div id="login-screen" class="screen">
+        <h1 style="text-align: center; font: xx-large; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Log in</h1>
+        <form id="login-form">
+          <input type="text" id="login-username" placeholder="Username" />
+          <div id="pass-wrapper">
+            <input type="password" id="login-password" placeholder="Password" />
+            <button type="button" id="toggle-password" onclick="showPassword()">Show</button>
+          </div> <br />
+          <button type="submit">Log in</button>
+          <p id="login-error"></p>
+        </form>
+      </div>
+
+      <div id="register-screen" class="screen">
+        <h1 style="text-align: center; font: xx-large; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Register</h1>
+        <form id="register-form">
+          <input type="text" id="username" placeholder="Username" />
+          <input type="password" id="password" placeholder="Password" />
+          <input type="password" id="confirm-password" placeholder="Confirm Password" />
+          <input type="text" id="first-name" placeholder="First Name" />
+          <input type="text" id="last-name" placeholder="Last Name" />
+          <input type="email" id="email" placeholder="Email" />
+          <label for="dob">Date of Birth:</label>
+          <input type="date" id="dob" /><br />
+          <button type="submit">Register</button>
+          <p id="register-error"></p>
+        </form>
+      </div>
+
+      <div id="search-screen" class="screen">
+        <h1 style="text-align: center; font: xx-large; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Search</h1>
+        <form id="search-form">
+          <input type="text" id="search-query" placeholder="Search for recipes..." />
+          <button type="submit">Search</button>
+        </form>
+        <div id="search-results"></div>
+      </div>
+
+      <div id="favorites-screen" class="screen">
+        <h1 style="text-align: center; font: xx-large; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Favorite Recipes</h1>
+        <div id="favorites-list">
+          <!-- To Do -->
+        </div>
+      </div>
+      
+      <div id="privates-screen" class="screen">
+        <h1 style="text-align: center; font: xx-large; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Private Recipes</h1>
+        <div id="private-list">
+          <!-- To Do -->
+        </div>
+      </div>
+
+      <div id="families-screen" class="screen">
+        <h1 style="text-align: center; font: xx-large; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Family Recipes</h1>
+        <div id="families-list">
+          <!-- To Do -->
+        </div>
+      </div>
+
+    </div>
+    <script src="scripts.js"></script>
   </body>
 </html>
